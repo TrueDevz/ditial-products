@@ -1,0 +1,24 @@
+RewriteEngine On
+
+# Ensure index.php and admin.php are accessible
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^(index|admin)\.php$ - [L]
+
+# Route all requests to index.php if file not found
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Block direct access to config and cache
+<IfModule mod_rewrite.c>
+    RewriteRule ^cache/ - [F,L]
+    RewriteRule ^config/ - [F,L]
+    RewriteRule ^setup\.sql$ - [F,L]
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set X-XSS-Protection "1; mode=block"
+</IfModule>

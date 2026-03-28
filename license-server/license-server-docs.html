@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>License Server — Documentation</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f1117; color: #e2e8f0; line-height: 1.7; }
+    a { color: #60a5fa; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Layout */
+    .sidebar {
+      position: fixed; top: 0; left: 0; width: 272px; height: 100vh;
+      background: #161b26; border-right: 1px solid #2d3748;
+      padding: 24px 0; overflow-y: auto; z-index: 10;
+    }
+    .content { margin-left: 272px; padding: 0 52px 100px; max-width: 920px; }
+
+    /* Sidebar */
+    .sidebar-brand { padding: 0 24px 20px; border-bottom: 1px solid #2d3748; margin-bottom: 12px; }
+    .sidebar-brand h2 { font-size: 1rem; font-weight: 700; color: #e2e8f0; }
+    .sidebar-brand p  { font-size: 0.75rem; color: #64748b; margin-top: 3px; }
+    .nav-group {
+      padding: 12px 24px 4px; font-size: 0.7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em; color: #4b5563;
+    }
+    nav a {
+      display: block; padding: 7px 24px; font-size: 0.85rem; color: #94a3b8;
+      border-left: 2px solid transparent; transition: all .15s;
+    }
+    nav a:hover, nav a.active { color: #e2e8f0; border-left-color: #6366f1; background: rgba(99,102,241,.08); text-decoration: none; }
+    nav a.sub { padding-left: 36px; font-size: 0.8rem; }
+
+    /* Content */
+    .hero { padding: 56px 0 40px; border-bottom: 1px solid #1e293b; margin-bottom: 48px; }
+    .hero h1 { font-size: 2rem; font-weight: 800; color: #f8fafc; }
+    .hero .sub { color: #94a3b8; font-size: 1rem; margin-top: 8px; }
+    .hero .badges { margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+    .badge {
+      padding: 4px 12px; border-radius: 999px; font-size: 0.75rem; font-weight: 600;
+      background: #1e293b; color: #94a3b8; border: 1px solid #334155;
+    }
+    .badge.green  { background: #052e16; color: #86efac; border-color: #166534; }
+    .badge.purple { background: #2e1065; color: #c4b5fd; border-color: #5b21b6; }
+    .badge.orange { background: #431407; color: #fdba74; border-color: #9a3412; }
+
+    section { padding: 40px 0; border-bottom: 1px solid #1e293b; }
+    section:last-child { border-bottom: none; }
+
+    h2 { font-size: 1.4rem; font-weight: 700; color: #f1f5f9; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #1e293b; }
+    h3 { font-size: 1.05rem; font-weight: 600; color: #93c5fd; margin: 28px 0 10px; }
+    h4 { font-size: 0.9rem; font-weight: 600; color: #e2e8f0; margin: 18px 0 6px; }
+    p  { margin-bottom: 12px; color: #cbd5e1; }
+    ul, ol { padding-left: 20px; margin-bottom: 12px; color: #cbd5e1; }
+    li { margin-bottom: 6px; }
+
+    pre {
+      background: #0d1117; border: 1px solid #21262d; border-radius: 10px;
+      padding: 18px 20px; margin: 14px 0; overflow-x: auto; font-size: 0.83rem;
+      line-height: 1.6; color: #c9d1d9;
+    }
+    code { font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace; }
+    p code, li code {
+      background: #1e293b; padding: 2px 6px; border-radius: 4px;
+      font-size: 0.85em; color: #93c5fd;
+    }
+
+    .callout { border-radius: 8px; padding: 16px 20px; margin: 20px 0; border-left: 4px solid; }
+    .callout.info    { background: #0c2340; border-color: #3b82f6; color: #bfdbfe; }
+    .callout.warning { background: #422006; border-color: #f59e0b; color: #fde68a; }
+    .callout.success { background: #052e16; border-color: #22c55e; color: #bbf7d0; }
+    .callout.danger  { background: #450a0a; border-color: #ef4444; color: #fecaca; }
+    .callout .icon   { margin-right: 8px; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: 16px 0; }
+    th { background: #1e293b; color: #94a3b8; font-weight: 600; padding: 10px 14px; text-align: left; border: 1px solid #334155; }
+    td { padding: 10px 14px; border: 1px solid #1e293b; color: #cbd5e1; }
+    tr:nth-child(even) td { background: #111827; }
+
+    .step-grid { display: grid; grid-template-columns: 40px 1fr; gap: 12px 16px; margin: 20px 0; }
+    .step-num  { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg,#6366f1,#7c3aed); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:0.9rem; flex-shrink:0; }
+    .step-body { padding-top: 6px; }
+    .step-body h4 { margin-top: 0; }
+
+    .file-card { background: #161b26; border: 1px solid #2d3748; border-radius: 10px; padding: 18px 20px; margin: 10px 0; }
+    .file-card .fname { font-family: monospace; font-size: 0.9rem; color: #a5b4fc; font-weight: 700; margin-bottom: 6px; }
+    .file-card .fdesc { font-size: 0.84rem; color: #94a3b8; }
+    .file-card .ftag  { display:inline-block; padding:2px 8px; border-radius:999px; font-size:0.7rem; font-weight:700; margin-left:8px; }
+    .seller  { background:#2e1065; color:#c4b5fd; }
+    .buyer   { background:#052e16; color:#86efac; }
+    .shared  { background:#1c1a05; color:#fcd34d; }
+
+    .arch-flow {
+      display: flex; align-items: center; gap: 0; margin: 20px 0; flex-wrap: wrap;
+    }
+    .arch-box {
+      background: #1e293b; border: 1px solid #334155; border-radius: 8px;
+      padding: 12px 16px; font-size: 0.82rem; text-align: center; min-width: 140px;
+    }
+    .arch-box strong { display: block; color: #e2e8f0; font-size: 0.9rem; }
+    .arch-box span   { color: #64748b; font-size: 0.75rem; }
+    .arch-arrow { color: #6366f1; font-size: 1.4rem; padding: 0 8px; }
+
+    @media (max-width:768px) { .sidebar { display:none; } .content { margin-left:0; padding: 0 16px 60px; } }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <h2>🔐 License Server</h2>
+    <p>Multi-Product Documentation</p>
+  </div>
+  <nav>
+    <div class="nav-group">Overview</div>
+    <a href="#architecture">Architecture</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#files-overview">Files Overview</a>
+
+    <div class="nav-group">Initial Setup</div>
+    <a href="#server-setup">1. Deploy License Server</a>
+    <a href="#db-setup">2. Database Setup</a>
+    <a href="#envato-token">3. Envato Token</a>
+    <a href="#product-secret">4. Product Secrets</a>
+    <a href="#admin-protect">5. Protect Admin</a>
+
+    <div class="nav-group">New Product Setup</div>
+    <a href="#new-product">Adding a New Product</a>
+    <a href="#new-product-server">Server-Side Changes</a>
+    <a href="#new-product-buyer">Buyer-Side Files</a>
+    <a href="#new-product-checklist">Checklist</a>
+
+    <div class="nav-group">Buyer Files</div>
+    <a href="#buyer-license-config">license_config.php</a>
+    <a href="#buyer-verify">verify_license.php</a>
+    <a href="#buyer-check">license_check.php</a>
+    <a href="#buyer-install">install.php</a>
+    <a href="#buyer-admin-guard">Admin Login Guard</a>
+
+    <div class="nav-group">Admin Dashboard</div>
+    <a href="#admin-dashboard">Using the Dashboard</a>
+    <a href="#revoking">Revoking Licenses</a>
+
+    <div class="nav-group">Security</div>
+    <a href="#security-features">Security Features</a>
+    <a href="#periodic-revalidation">Periodic Re-Validation</a>
+
+    <div class="nav-group">Reference</div>
+    <a href="#api-reference">API Reference</a>
+    <a href="#troubleshooting">Troubleshooting</a>
+  </nav>
+</aside>
+
+<!-- Main Content -->
+<main class="content">
+
+  <!-- Hero -->
+  <div class="hero">
+    <h1>🔐 License Server Documentation</h1>
+    <p class="sub">Central Envato License Verification — Multi-Product Edition</p>
+    <div class="badges">
+      <span class="badge green">PHP 7.4+</span>
+      <span class="badge green">MySQL 5.7+</span>
+      <span class="badge purple">Multi-Product</span>
+      <span class="badge purple">Domain Locked</span>
+      <span class="badge orange">Envato API v3</span>
+    </div>
+  </div>
+
+  <!-- Architecture -->
+  <section id="architecture">
+    <h2>Architecture Overview</h2>
+    <p>The license server acts as a <strong>proxy between buyer servers and the Envato API</strong>. Your Envato Personal Token is stored exclusively on your server — it is never distributed in buyer files.</p>
+
+    <div class="arch-flow">
+      <div class="arch-box"><strong>Buyer</strong><span>runs install.php</span></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box"><strong>verify_license.php</strong><span>on buyer's server</span></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box" style="border-color:#6366f1;background:#1e1b4b"><strong>License Server</strong><span>your hosting</span></div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-box"><strong>Envato API</strong><span>api.envato.com</span></div>
+    </div>
+
+    <h3>Key Security Properties</h3>
+    <ul>
+      <li>Envato token is <strong>never in buyer files</strong> — lives only on your server</li>
+      <li>Each product has its own <strong>unique secret key</strong> — one compromised product doesn't affect others</li>
+      <li>Activations are <strong>domain-locked</strong> — one purchase code works on one domain only</li>
+      <li>All buyer requests are <strong>authenticated</strong> with a product secret before the license server responds</li>
+    </ul>
+  </section>
+
+  <!-- How it Works -->
+  <section id="how-it-works">
+    <h2>How It Works (Full Request Flow)</h2>
+
+    <h3>Step-by-Step: First Activation</h3>
+    <div class="step-grid">
+      <div class="step-num">1</div>
+      <div class="step-body"><h4>Buyer opens <code>install.php</code></h4><p>Step 1: buyer enters DB credentials → config files written automatically.<br>Step 2: buyer enters Envato purchase code.</p></div>
+
+      <div class="step-num">2</div>
+      <div class="step-body"><h4>JS fetches <code>api/verify_license.php</code></h4><p>A POST request is sent with <code>purchase_code</code> to the buyer's server.</p></div>
+
+      <div class="step-num">3</div>
+      <div class="step-body"><h4><code>verify_license.php</code> calls your license server</h4><p>Sends: <code>product_id</code>, <code>product_key</code> (shared secret), <code>purchase_code</code>, <code>domain</code>.</p></div>
+
+      <div class="step-num">4</div>
+      <div class="step-body"><h4>License server validates the product secret</h4><p>Looks up <code>product_id</code> in the <code>PRODUCTS[]</code> config. Compares <code>product_key</code>. Rejects unknown products or wrong keys.</p></div>
+
+      <div class="step-num">5</div>
+      <div class="step-body"><h4>License server queries Envato API</h4><p>Calls <code>api.envato.com/v3/market/buyer/purchase?code=...</code> with your Envato token.</p></div>
+
+      <div class="step-num">6</div>
+      <div class="step-body"><h4>On success: domain lock + DB record</h4><p>Stores <code>(product_id, purchase_code, buyer_username, domain)</code> in your DB. Unique key prevents the same code activating on a second domain for the same product.</p></div>
+
+      <div class="step-num">7</div>
+      <div class="step-body"><h4>License file written on buyer's server</h4><p><code>server/config/license.php</code> is written with <code>SN_LICENSED = true</code>. This file is checked on every Flutter API request via <code>license_check.php</code>.</p></div>
+
+      <div class="step-num">8</div>
+      <div class="step-body"><h4>Subsequent API requests check local license file</h4><p><code>api/settings/get_settings.php</code> includes <code>license_check.php</code> — checks <code>config/license.php</code> exists and is valid. No network call on every request.</p></div>
+    </div>
+  </section>
+
+  <!-- Files Overview -->
+  <section id="files-overview">
+    <h2>Files Overview</h2>
+    <p>Files are split into two categories: <strong>Seller-side</strong> (runs on YOUR server, never distributed) and <strong>Buyer-side</strong> (distributed in the product ZIP).</p>
+
+    <h3>Seller-Side Files <span style="font-size:0.8rem;font-weight:400;color:#64748b">(your server only — never distribute)</span></h3>
+    <div class="file-card"><div class="fname">license-server/index.php <span class="ftag seller">Seller</span></div><div class="fdesc">Main API endpoint. Handles all verification requests. Validates product secrets, calls Envato API, enforces domain lock.</div></div>
+    <div class="file-card"><div class="fname">license-server/admin.php <span class="ftag seller">Seller</span></div><div class="fdesc">Admin dashboard. View all activations per product, revoke licenses, see activity logs.</div></div>
+    <div class="file-card"><div class="fname">license-server/config/settings.php <span class="ftag seller">Seller</span></div><div class="fdesc">Your Envato token + PRODUCTS[] array. One entry per product. Add new products here.</div></div>
+    <div class="file-card"><div class="fname">license-server/config/database.php <span class="ftag seller">Seller</span></div><div class="fdesc">License server DB credentials (separate DB from buyer's app).</div></div>
+    <div class="file-card"><div class="fname">license-server/setup.sql <span class="ftag seller">Seller</span></div><div class="fdesc">Import once to create the license DB tables: activations + activation_logs.</div></div>
+    <div class="file-card"><div class="fname">license-server/.htaccess <span class="ftag seller">Seller</span></div><div class="fdesc">Routes all requests to index.php. Blocks direct access to config/ and cache/. Basic Auth on admin.php.</div></div>
+
+    <h3>Buyer-Side Files <span style="font-size:0.8rem;font-weight:400;color:#64748b">(distributed in product ZIP)</span></h3>
+    <div class="file-card"><div class="fname">server/install.php <span class="ftag buyer">Buyer</span></div><div class="fdesc">3-step setup wizard. Writes DB config files (Step 1) and activates license (Step 2). Redirected to admin on Step 3.</div></div>
+    <div class="file-card"><div class="fname">server/api/verify_license.php <span class="ftag buyer">Buyer</span></div><div class="fdesc">Called by install.php. POSTs to your license server with product_id + product_key. Writes config/license.php on success.</div></div>
+    <div class="file-card"><div class="fname">server/api/config/license_config.php <span class="ftag buyer">Buyer</span></div><div class="fdesc">Per-product config. Contains LICENSE_SERVER_URL, PRODUCT_ID, PRODUCT_SECRET (no Envato token). You fill this before distributing.</div></div>
+    <div class="file-card"><div class="fname">server/api/config/license_check.php <span class="ftag buyer">Buyer</span></div><div class="fdesc">Guard middleware. Include at top of any API endpoint. Returns 403 if config/license.php doesn't exist or is invalid.</div></div>
+    <div class="file-card"><div class="fname">server/admin/login.php <span class="ftag buyer">Buyer</span></div><div class="fdesc">Has license gate at top — redirects to install.php if not licensed. Admin panel is inaccessible without activation.</div></div>
+  </section>
+
+  <!-- Server Setup -->
+  <section id="server-setup">
+    <h2>1. Deploy the License Server</h2>
+    <p>The <code>license-server/</code> folder is deployed on your own hosting. It handles ALL your products from one URL.</p>
+
+    <ol>
+      <li>Upload <code>license-server/</code> to your hosting (e.g. <code>public_html/license/</code>)</li>
+      <li>Set folder permissions: <code>755</code> for directories, <code>644</code> for PHP files</li>
+      <li>Create the <code>cache/</code> directory with write permission (<code>chmod 775 cache/</code>)</li>
+      <li>Ensure <strong>mod_rewrite</strong> is enabled (Apache) — <code>.htaccess</code> is included</li>
+      <li>Confirm it runs at: <code>https://license.yourdomain.com/</code></li>
+    </ol>
+
+    <div class="callout warning">
+      <span class="icon">⚠️</span>
+      <strong>Use HTTPS only.</strong> Requests from buyer servers carry the product secret — always use SSL.
+    </div>
+
+    <h3>Test the Endpoint</h3>
+    <pre><code>curl -X POST https://license.yourdomain.com/ \
+  -d "action=check&product_id=shortnews&product_key=YOUR_SECRET&purchase_code=TEST&domain=test.com"
+
+# Expected (if secret is wrong):
+{"success":false,"message":"Unauthorized request."}</code></pre>
+  </section>
+
+  <!-- DB Setup -->
+  <section id="db-setup">
+    <h2>2. Database Setup</h2>
+    <p>The license server uses its own <strong>separate MySQL database</strong>, isolated from any buyer's app database.</p>
+
+    <pre><code>-- Create the database on your server
+CREATE DATABASE shortnews_licenses CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- Then import the schema
+-- (Run from CLI or phpMyAdmin)
+mysql -u your_user -p shortnews_licenses &lt; license-server/setup.sql</code></pre>
+
+    <p>Edit <code>license-server/config/database.php</code>:</p>
+    <pre><code>define('LS_DB_HOST', 'localhost');
+define('LS_DB_USER', 'your_db_user');
+define('LS_DB_PASS', 'your_db_password');
+define('LS_DB_NAME', 'shortnews_licenses');</code></pre>
+
+    <h3>Schema (for reference)</h3>
+    <table>
+      <thead><tr><th>Table</th><th>Purpose</th><th>Key Columns</th></tr></thead>
+      <tbody>
+        <tr><td><code>activations</code></td><td>One row per activated license</td><td>product_id, purchase_code, domain, buyer_username</td></tr>
+        <tr><td><code>activation_logs</code></td><td>Audit trail of every event</td><td>product_id, purchase_code, domain, action, ip_address</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Envato Token -->
+  <section id="envato-token">
+    <h2>3. Envato Personal Token</h2>
+    <p>One Envato token verifies purchase codes for <strong>all your products</strong>.</p>
+
+    <h3>How to Get Your Token</h3>
+    <ol>
+      <li>Go to <a href="https://build.envato.com" target="_blank">build.envato.com</a></li>
+      <li>Click <strong>"Create a new token"</strong></li>
+      <li>Enable permission: <em>"View the user's purchases of the app creator"</em></li>
+      <li>Copy the generated token</li>
+    </ol>
+
+    <p>Set it in <code>license-server/config/settings.php</code>:</p>
+    <pre><code>define('ENVATO_TOKEN', 'your_token_here'); // 40-char string</code></pre>
+
+    <div class="callout danger">
+      <span class="icon">🚨</span>
+      Never commit <code>settings.php</code> to version control. It is already listed in <code>.gitignore</code>.
+    </div>
+  </section>
+
+  <!-- Product Secret -->
+  <section id="product-secret">
+    <h2>4. Product Secrets</h2>
+    <p>Each product has its own secret key in the <code>PRODUCTS[]</code> array. This secret is shared between your license server and the buyer's <code>license_config.php</code>.</p>
+
+    <pre><code>// license-server/config/settings.php
+define('PRODUCTS', [
+    'shortnews' => [
+        'name'   => 'ShortNews — Flutter News App',
+        'secret' => 'abc123XYZ...', // min 32 random chars
+    ],
+    'jobapp' => [
+        'name'   => 'JobApp — Flutter Job Board',
+        'secret' => 'def456UVW...', // different secret!
+    ],
+]);</code></pre>
+
+    <div class="callout info">
+      <span class="icon">ℹ️</span>
+      Generate strong secrets at <a href="https://www.random.org/strings/" target="_blank">random.org/strings</a> — use Letters + Digits, min 32 characters.
+    </div>
+  </section>
+
+  <!-- Admin Protect -->
+  <section id="admin-protect">
+    <h2>5. Protect the Admin Dashboard</h2>
+    <p>The admin dashboard is protected with HTTP Basic Auth. Set it up once:</p>
+
+    <pre><code># SSH into your server and run:
+htpasswd -c /home/your_user/.htpasswd admin
+# Enter a strong password when prompted
+
+# Then edit license-server/.htaccess:
+# Change this line:
+AuthUserFile /path/to/.htpasswd
+# To the actual path, e.g.:
+AuthUserFile /home/your_user/.htpasswd</code></pre>
+
+    <p>Access at: <code>https://license.yourdomain.com/admin.php</code></p>
+  </section>
+
+  <!-- Adding a New Product -->
+  <section id="new-product">
+    <h2>Adding a New Product</h2>
+    <p>When you publish a new product on CodeCanyon, you need to make <strong>4 changes</strong> — 1 on your server and 3 in the new product's distributed files.</p>
+  </section>
+
+  <!-- New Product Server Side -->
+  <section id="new-product-server">
+    <h2>New Product — Server-Side Change</h2>
+    <p>Edit <code>license-server/config/settings.php</code> and add one entry to the <code>PRODUCTS[]</code> array:</p>
+
+    <pre><code>define('PRODUCTS', [
+    'shortnews' => [ ... ],       // ← existing product
+
+    // ── ADD NEW PRODUCT HERE ──────────────────────
+    'your_new_product_id' => [
+        'name'   => 'Your Product Name',
+        'secret' => 'GENERATE_NEW_UNIQUE_SECRET_MIN_32_CHARS',
+    ],
+    // ─────────────────────────────────────────────
+]);</code></pre>
+
+    <div class="callout success">
+      <span class="icon">✅</span>
+      That's the <strong>only server-side change needed</strong>. No DB migration, no redeployment — just add the entry and save.
+    </div>
+  </section>
+
+  <!-- New Product Buyer Side -->
+  <section id="new-product-buyer">
+    <h2>New Product — Buyer-Side Files</h2>
+    <p>Every new product needs these 4 buyer-side files configured and distributed in its ZIP.</p>
+
+    <h3 id="buyer-license-config">File 1 — <code>api/config/license_config.php</code></h3>
+    <p>Change <code>PRODUCT_ID</code> and <code>PRODUCT_SECRET</code> to match the new product's settings.php entry:</p>
+    <pre><code>&lt;?php
+define('LICENSE_SERVER_URL', 'https://license.yourdomain.com/');
+define('PRODUCT_ID',         'your_new_product_id');  // ← MUST match settings.php key
+define('PRODUCT_SECRET',     'GENERATE_NEW_UNIQUE_SECRET_MIN_32_CHARS'); // ← MUST match settings.php secret</code></pre>
+
+    <h3 id="buyer-verify">File 2 — <code>api/verify_license.php</code></h3>
+    <p>This file is <strong>identical for all products</strong> — copy as-is from ShortNews. No changes needed. It reads <code>PRODUCT_ID</code> and <code>PRODUCT_SECRET</code> from <code>license_config.php</code> dynamically.</p>
+    <pre><code>// verify_license.php — same file for all products, no changes needed
+require_once '../config/license_config.php'; // reads the product-specific values</code></pre>
+
+    <h3 id="buyer-check">File 3 — <code>api/config/license_check.php</code></h3>
+    <p>This file is also <strong>identical for all products</strong> — copy as-is. It only checks the local <code>config/license.php</code> file, which is product-agnostic.</p>
+
+    <h3 id="buyer-install">File 4 — <code>install.php</code></h3>
+    <p>Copy as-is, but update the product name in the UI and the confirmation text for buyers:</p>
+    <pre><code>&lt;!-- Change only the display name in the brand section: --&gt;
+&lt;h1&gt;YourProductName&lt;/h1&gt;   &lt;!-- was: ShortNews --&gt;
+&lt;p&gt;Installation Wizard&lt;/p&gt;</code></pre>
+
+    <h3 id="buyer-admin-guard">File 5 — <code>admin/login.php</code> (or any admin entry point)</h3>
+    <p>Add the license gate at the very top — identical for all products:</p>
+    <pre><code>&lt;?php
+// License gate — identical for all products
+$_lf = __DIR__ . '/../config/license.php';
+if (!file_exists($_lf)) { header('Location: ../install.php'); exit; }
+require_once $_lf;
+if (!defined('SN_LICENSED') || SN_LICENSED !== true) { header('Location: ../install.php'); exit; }
+unset($_lf);
+// ── rest of admin/login.php below... ──</code></pre>
+
+    <div class="callout info">
+      <span class="icon">ℹ️</span>
+      Also add <code>require_once '../config/license_check.php';</code> to any API endpoint that should be protected (e.g. your equivalent of <code>get_settings.php</code>).
+    </div>
+  </section>
+
+  <!-- Checklist -->
+  <section id="new-product-checklist">
+    <h2>New Product — Complete Checklist</h2>
+    <table>
+      <thead>
+        <tr><th>#</th><th>Task</th><th>Where</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Choose a unique <code>product_id</code></td><td>Your decision</td><td>Lowercase, no spaces. e.g. <code>jobapp</code></td></tr>
+        <tr><td>2</td><td>Generate a unique product secret (32+ chars)</td><td>random.org</td><td>Different from all other product secrets</td></tr>
+        <tr><td>3</td><td>Add entry to <code>PRODUCTS[]</code> in <code>settings.php</code></td><td>Your license server</td><td>Save and upload — no restart needed</td></tr>
+        <tr><td>4</td><td>Set <code>PRODUCT_ID</code> + <code>PRODUCT_SECRET</code> in buyer's <code>license_config.php</code></td><td>New product files</td><td>Must match settings.php values exactly</td></tr>
+        <tr><td>5</td><td>Copy <code>verify_license.php</code> from ShortNews</td><td>New product files</td><td>No changes needed</td></tr>
+        <tr><td>6</td><td>Copy <code>license_check.php</code> from ShortNews</td><td>New product files</td><td>No changes needed</td></tr>
+        <tr><td>7</td><td>Copy <code>install.php</code> — update product name in HTML</td><td>New product files</td><td>Only branding text changes</td></tr>
+        <tr><td>8</td><td>Add license gate to admin login page</td><td>New product files</td><td>Copy 5-line block from ShortNews</td></tr>
+        <tr><td>9</td><td>Add <code>license_check.php</code> require to first API endpoint</td><td>New product files</td><td>e.g. your <code>get_settings.php</code> equivalent</td></tr>
+        <tr><td>10</td><td>Test full flow locally</td><td>Your machine</td><td>install → activate → admin login → API</td></tr>
+        <tr><td>11</td><td>Exclude <code>license-server/</code> from distribution ZIP</td><td>Before packaging</td><td>Never ships to buyers</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Admin Dashboard -->
+  <section id="admin-dashboard">
+    <h2>Using the Admin Dashboard</h2>
+    <p>Access at: <code>https://license.yourdomain.com/admin.php</code></p>
+
+    <h3>Features</h3>
+    <ul>
+      <li><strong>Product filter tabs</strong> — view all activations or filter by specific product</li>
+      <li><strong>Per-product stat cards</strong> — total + today's activation count for each product at a glance</li>
+      <li><strong>Activations table</strong> — full list with product badge, purchase code, buyer username, domain, date</li>
+      <li><strong>Activity log</strong> — last 20 events with timestamps and IP addresses</li>
+    </ul>
+  </section>
+
+  <!-- Revoking -->
+  <section id="revoking">
+    <h2>Revoking Licenses</h2>
+    <p>Use the <strong>Revoke</strong> button in the admin dashboard to remove an activation. This is useful for:</p>
+    <ul>
+      <li>Buyer requested a refund (Envato handles payment, you handle access)</li>
+      <li>Suspected abuse or license sharing</li>
+      <li>Buyer wants to move to a new domain (revoke + re-activate)</li>
+    </ul>
+
+    <div class="callout warning">
+      <span class="icon">⚠️</span>
+      Revoking only removes the DB record on YOUR server. The buyer's local <code>config/license.php</code> still exists. To immediately cut access, you must also enable <a href="#periodic-revalidation">Periodic Re-Validation</a>.
+    </div>
+  </section>
+
+  <!-- Security Features -->
+  <section id="security-features">
+    <h2>Security Features</h2>
+    <table>
+      <thead><tr><th>Feature</th><th>How It Works</th><th>Configurable</th></tr></thead>
+      <tbody>
+        <tr><td>Domain Locking</td><td>The first domain to activate a purchase code "owns" it. Second domain gets rejected regardless of the purchase code.</td><td>Not bypassed — hardcoded</td></tr>
+        <tr><td>Product Secret</td><td>Each buyer request must include the correct product secret. Unknown products and wrong keys get 403.</td><td>PRODUCTS[] in settings.php</td></tr>
+        <tr><td>Rate Limiting</td><td>Max N requests/min per IP. Prevents brute-force guessing of purchase codes via your server.</td><td>RATE_LIMIT_PER_MINUTE in settings.php</td></tr>
+        <tr><td>Envato Token Isolation</td><td>Token lives only in settings.php on your server. Buyer files contain no credentials.</td><td>ENVATO_TOKEN in settings.php</td></tr>
+        <tr><td>Admin Basic Auth</td><td>admin.php protected by Apache HTTP Basic Auth. Separate from app credentials.</td><td>.htpasswd file</td></tr>
+        <tr><td>Config Dir Blocked</td><td>.htaccess blocks direct browser access to config/ and cache/ directories.</td><td>.htaccess</td></tr>
+        <tr><td>Periodic Re-Validation</td><td>Optional — buyers' servers contact yours every 7 days to confirm the license is still active.</td><td>Uncommment block in license_check.php</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Periodic Re-Validation -->
+  <section id="periodic-revalidation">
+    <h2>Periodic Re-Validation</h2>
+    <p>By default, after initial activation the buyer's <code>config/license.php</code> file is checked locally — no network call per API request. This is fast but means revoked licenses still work until the local file is deleted.</p>
+    <p>To enable <strong>7-day online re-checks</strong>, uncomment the block at the bottom of <code>server/api/config/license_check.php</code>:</p>
+
+    <pre><code>// Uncomment this entire block in license_check.php:
+if (defined('SN_PURCHASE_CODE')) {
+    $checkFile = sys_get_temp_dir() . '/sn_lcheck_' . md5(SN_PURCHASE_CODE) . '.txt';
+    $lastCheck = file_exists($checkFile) ? (int) file_get_contents($checkFile) : 0;
+    if (time() - $lastCheck > 7 * 86400) {
+        // ... pings your license server's 'status' action
+        // If server returns active=false → deletes local license.php → returns 403
+    }
+}</code></pre>
+
+    <table>
+      <thead><tr><th></th><th>Without Re-Validation</th><th>With Re-Validation</th></tr></thead>
+      <tbody>
+        <tr><td>Performance</td><td>✅ No network overhead</td><td>Tiny overhead every 7 days</td></tr>
+        <tr><td>Revoke effectiveness</td><td>Works after buyer clears local license file</td><td>✅ Works within 7 days automatically</td></tr>
+        <tr><td>Offline tolerance</td><td>✅ Works fully offline</td><td>Works offline; re-check fails silently if offline</td></tr>
+        <tr><td>Recommended for</td><td>Most sellers (refunds are rare)</td><td>High-value products or if abuse is common</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- API Reference -->
+  <section id="api-reference">
+    <h2>License Server API Reference</h2>
+    <p>All requests: <code>POST https://license.yourdomain.com/</code></p>
+
+    <h3>Action: <code>check</code> — Verify &amp; Activate</h3>
+    <table>
+      <thead><tr><th>Parameter</th><th>Required</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>action</code></td><td>Yes</td><td>Must be <code>check</code></td></tr>
+        <tr><td><code>product_id</code></td><td>Yes</td><td>e.g. <code>shortnews</code></td></tr>
+        <tr><td><code>product_key</code></td><td>Yes</td><td>Product's secret from settings.php</td></tr>
+        <tr><td><code>purchase_code</code></td><td>Yes</td><td>Envato purchase code from buyer</td></tr>
+        <tr><td><code>domain</code></td><td>Yes</td><td>Buyer's domain (set from <code>$_SERVER['HTTP_HOST']</code>)</td></tr>
+      </tbody>
+    </table>
+    <pre><code>// Success response:
+{"success": true, "message": "License activated successfully!", "buyer": "buyer_username"}
+
+// Error — wrong secret:
+{"success": false, "message": "Unauthorized request."}
+
+// Error — domain mismatch:
+{"success": false, "message": "This purchase code is already activated on: otherdomain.com. One license = one domain."}
+
+// Error — invalid code:
+{"success": false, "message": "Invalid purchase code. Please check and try again."}</code></pre>
+
+    <h3>Action: <code>status</code> — Check Existing Activation</h3>
+    <table>
+      <thead><tr><th>Parameter</th><th>Required</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>action</code></td><td>Yes</td><td>Must be <code>status</code></td></tr>
+        <tr><td><code>product_id</code></td><td>Yes</td><td>e.g. <code>shortnews</code></td></tr>
+        <tr><td><code>product_key</code></td><td>Yes</td><td>Product's secret</td></tr>
+        <tr><td><code>purchase_code</code></td><td>Yes</td><td>The purchase code to check</td></tr>
+        <tr><td><code>domain</code></td><td>Yes</td><td>Domain to verify against</td></tr>
+      </tbody>
+    </table>
+    <pre><code>// Active:
+{"success": true, "active": true, "buyer": "username", "activated": "2024-03-25 10:00:00"}
+
+// Not active / revoked:
+{"success": true, "active": false}</code></pre>
+  </section>
+
+  <!-- Troubleshooting -->
+  <section id="troubleshooting">
+    <h2>Troubleshooting</h2>
+
+    <h4>❌ "Unauthorized request." on every activation</h4>
+    <p>The <code>PRODUCT_SECRET</code> in the buyer's <code>license_config.php</code> doesn't match the <code>secret</code> in your <code>settings.php</code> for that <code>product_id</code>. Check both files — they must be character-for-character identical.</p>
+
+    <h4>❌ "Unknown product ID."</h4>
+    <p>The <code>PRODUCT_ID</code> in <code>license_config.php</code> doesn't match any key in your <code>PRODUCTS[]</code> array. Check spelling and case — keys are case-sensitive.</p>
+
+    <h4>❌ "Could not reach the license server."</h4>
+    <p>The buyer's server couldn't connect to your license server URL. Check: (1) your server is online, (2) <code>LICENSE_SERVER_URL</code> has a trailing slash, (3) HTTPS is valid, (4) buyer's PHP has <code>curl</code> enabled.</p>
+
+    <h4>❌ install.php shows blank page after DB step</h4>
+    <p>Usually a PHP error in the config file write. Check that <code>server/api/config/</code> and <code>server/admin/config/</code> are writable (<code>chmod 755</code>).</p>
+
+    <h4>❌ License activated but admin panel redirects to install.php</h4>
+    <p>The license file wasn't written. Check that <code>server/config/</code> directory exists and is writable. The directory is created automatically but may fail due to permissions.</p>
+
+    <h4>❌ Database "already activated" error but buyer can't access admin</h4>
+    <p>The activation record exists in the DB but <code>config/license.php</code> is missing on the buyer's server. Have them go to <code>install.php</code> again — it will detect the existing activation and re-write the license file.</p>
+  </section>
+
+</main>
+
+<script>
+// Sidebar active link highlight
+const links = document.querySelectorAll('nav a');
+const sections = document.querySelectorAll('section[id], div[id]');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.id; });
+  links.forEach(l => {
+    l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+  });
+});
+</script>
+</body>
+</html>
