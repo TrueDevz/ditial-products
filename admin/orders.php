@@ -3,7 +3,7 @@
 include '../includes/header.php';
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: /digitalProducts/login.php');
+    header('Location: ' . BASE_URL . '/login.php');
     exit;
 }
 
@@ -42,7 +42,7 @@ $orders = $stmt->fetchAll();
                                         <div style="font-weight: 600;"><?php echo $order['username']; ?></div>
                                         <div style="font-size: 0.75rem; color: var(--gray);"><?php echo $order['email']; ?></div>
                                     </td>
-                                    <td style="padding: 1.5rem 1rem; font-weight: 800; color: var(--primary);"><?php echo CURRENCY_SYMBOL; ?><?php echo number_format($order['total_amount'], 2); ?></td>
+                                    <td style="padding: 1.5rem 1rem; font-weight: 800; color: var(--primary);"><?php echo APP_CURRENCY_SYMBOL; ?><?php echo number_format($order['total_amount'], 2); ?></td>
                                     <td style="padding: 1.5rem 1rem;">
                                         <?php 
                                             $c = ($order['payment_status'] === 'completed') ? '#16a34a' : (($order['payment_status'] === 'pending') ? '#ca8a04' : '#dc2626');

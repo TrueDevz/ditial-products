@@ -3,7 +3,7 @@
 include '../includes/header.php';
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: /digitalProducts/login.php');
+    header('Location: ' . BASE_URL . '/login.php');
     exit;
 }
 
@@ -12,6 +12,7 @@ $success = '';
 // Handle Settings Update
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($_POST['settings'] as $name => $val) {
+        $val = trim(html_entity_decode($val, ENT_QUOTES, 'UTF-8'));
         // Check if setting exists
         $check = $pdo->prepare("SELECT COUNT(*) FROM settings WHERE name = ?");
         $check->execute([$name]);
@@ -90,7 +91,7 @@ try {
                         <div style="margin-bottom: 2rem;">
                             <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Purchase Verification API URL</label>
                             <div style="display: flex; gap: 10px;">
-                                <input type="text" value="<?php echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/digitalProducts/v3/market/buyer/purchase"; ?>" style="flex: 1; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; background: #f1f5f9; font-family: monospace;" readonly>
+                                <input type="text" value="<?php echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]" . BASE_URL . "/v3/market/buyer/purchase"; ?>" style="flex: 1; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; background: #f1f5f9; font-family: monospace;" readonly>
                                 <button type="button" class="btn btn-outline" onclick="navigator.clipboard.writeText(this.previousElementSibling.value); alert('URL Copied!')">Copy URL</button>
                             </div>
                             <small style="color: #64748b;">Use this URL in your apps or in your <strong>License Server</strong> to verify purchase codes.</small>

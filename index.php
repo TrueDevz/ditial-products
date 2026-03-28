@@ -17,8 +17,8 @@ $products = $stmt->fetchAll();
         <h1>Discover Premium Digital Assets</h1>
         <p>Over 10,000+ high-quality PHP scripts, HTML templates, and graphics created by top developers worldwide.</p>
         <div style="display: flex; gap: 1rem; justify-content: center;">
-            <a href="/digitalProducts/category.php" class="btn btn-primary" style="background: white; color: var(--primary);">Browse Marketplace</a>
-            <a href="/digitalProducts/register.php" class="btn btn-outline" style="border-color: white; color: white;">Start Selling</a>
+            <a href="<?php echo BASE_URL; ?>/category.php" class="btn btn-primary" style="background: white; color: var(--primary);">Browse Marketplace</a>
+            <a href="<?php echo BASE_URL; ?>/register.php" class="btn btn-outline" style="border-color: white; color: white;">Start Selling</a>
         </div>
     </div>
 </section>
@@ -27,7 +27,7 @@ $products = $stmt->fetchAll();
 <section class="container" style="margin-top: -3rem; position: relative; z-index: 10;">
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem;">
         <?php foreach ($categories as $cat): ?>
-            <a href="/digitalProducts/category.php?slug=<?php echo $cat['slug']; ?>" class="product-card" style="padding: 2rem; text-align: center; justify-content: center; align-items: center; border-radius: 1rem;">
+            <a href="<?php echo BASE_URL; ?>/category.php?slug=<?php echo $cat['slug']; ?>" class="product-card" style="padding: 2rem; text-align: center; justify-content: center; align-items: center; border-radius: 1rem;">
                 <i class="bi <?php echo $cat['icon']; ?>" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;"></i>
                 <h3 style="margin-bottom: 0.5rem;"><?php echo $cat['name']; ?></h3>
                 <p style="font-size: 0.875rem; color: var(--gray);"><?php echo $cat['description']; ?></p>
@@ -43,7 +43,7 @@ $products = $stmt->fetchAll();
             <h2 style="font-size: 2rem; font-weight: 800;">Recently Added</h2>
             <p style="color: var(--gray);">Check out the newest items in our marketplace.</p>
         </div>
-        <a href="/digitalProducts/category.php" class="btn btn-outline">View All Items</a>
+        <a href="<?php echo BASE_URL; ?>/category.php" class="btn btn-outline">View All Items</a>
     </div>
 
     <div class="grid">
@@ -56,7 +56,7 @@ $products = $stmt->fetchAll();
         <?php else: ?>
             <?php foreach ($products as $product): ?>
                 <div class="product-card">
-                    <div class="product-image" style="background-image: url('/digitalProducts/uploads/previews/<?php echo $product['preview_image']; ?>'); position: relative;">
+                    <div class="product-image" style="background-image: url('<?php echo BASE_URL; ?>/uploads/previews/<?php echo $product['preview_image']; ?>'); position: relative;">
                         <?php
                         $is_wishlisted = false;
                         if (isset($_SESSION['user_id'])) {
@@ -73,8 +73,8 @@ $products = $stmt->fetchAll();
                         <div class="product-category"><?php echo $product['category_name']; ?></div>
                         <h3 class="product-title"><?php echo $product['name']; ?></h3>
                         <div class="product-meta">
-                            <div class="product-price"><?php echo CURRENCY_SYMBOL; ?><?php echo $product['price']; ?></div>
-                            <a href="/digitalProducts/product.php?slug=<?php echo $product['slug']; ?>" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.875rem;">View Details</a>
+                            <div class="product-price"><?php echo APP_CURRENCY_SYMBOL; ?> <?php echo number_format($product['price'], 2); ?></div>
+                            <a href="<?php echo BASE_URL; ?>/product.php?slug=<?php echo $product['slug']; ?>" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.875rem;">View Details</a>
                         </div>
                     </div>
                 </div>
@@ -103,7 +103,7 @@ $products = $stmt->fetchAll();
                     <span>Dedicated seller support team</span>
                 </li>
             </ul>
-            <a href="/digitalProducts/register.php" class="btn btn-primary btn-lg" style="padding: 1rem 2.5rem;">Create Seller Account</a>
+            <a href="<?php echo BASE_URL; ?>/register.php" class="btn btn-primary btn-lg" style="padding: 1rem 2.5rem;">Create Seller Account</a>
         </div>
         <div style="flex: 1; min-width: 300px; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
             <div style="background: var(--light); padding: 2rem; border-radius: var(--radius); text-align: center;">

@@ -4,7 +4,7 @@ include '../includes/header.php';
 require_once '../includes/functions.php';
 
 if (!isset($_SESSION['user_id']) || ($_SESSION['role'] !== 'seller' && $_SESSION['role'] !== 'admin')) {
-    header('Location: /digitalProducts/login.php');
+    header('Location: ' . BASE_URL . '/login.php');
     exit;
 }
 
@@ -57,8 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div style="background: white; padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow);">
                 <h3 style="margin-bottom: 1.5rem; font-size: 1.1rem;">Seller Menu</h3>
                 <ul style="list-style: none;">
-                    <li style="margin-bottom: 1rem;"><a href="<?php echo ($_SESSION['role'] === 'admin') ? '/digitalProducts/admin/index.php' : '/digitalProducts/dashboard/index.php'; ?>" style="color: var(--gray);"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-                    <li style="margin-bottom: 1rem;"><a href="/digitalProducts/dashboard/upload.php" style="color: var(--primary); font-weight: 600;"><i class="bi bi-cloud-upload"></i> Upload Item</a></li>
+                    <li style="margin-bottom: 1rem;"><a href="<?php echo ($_SESSION['role'] === 'admin') ? BASE_URL . '/admin/index.php' : BASE_URL . '/dashboard/index.php'; ?>" style="color: var(--gray);"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                    <li style="margin-bottom: 1rem;"><a href="<?php echo BASE_URL; ?>/dashboard/upload.php" style="color: var(--primary); font-weight: 600;"><i class="bi bi-cloud-upload"></i> Upload Item</a></li>
                     <li style="margin-bottom: 1rem;"><a href="#" style="color: var(--gray);"><i class="bi bi-box"></i> My Products</a></li>
                     <li style="margin-bottom: 1rem;"><a href="#" style="color: var(--gray);"><i class="bi bi-currency-dollar"></i> Sales Settings</a></li>
                 </ul>
@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
                         <div>
-                            <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Price ($)</label>
+                            <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Price (<?php echo APP_CURRENCY_SYMBOL; ?>)</label>
                             <input type="number" step="0.01" name="price" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius);" required>
                         </div>
                         <div>

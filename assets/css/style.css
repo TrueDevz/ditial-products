@@ -1,5 +1,6 @@
 /* assets/css/style.css */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Anek+Telugu:wght@300;400;500;600;700&display=swap');
 
 :root {
     --primary: #2563eb;
@@ -20,7 +21,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Anek Telugu', 'Inter', sans-serif;
 }
 
 body {
@@ -35,7 +36,8 @@ a {
     transition: 0.3s;
 }
 
-button, .btn {
+button,
+.btn {
     cursor: pointer;
     border: none;
     border-radius: var(--radius);

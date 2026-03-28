@@ -21,9 +21,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['role'] = $user['role'];
             
             if ($user['role'] === 'admin') {
-                header('Location: /digitalProducts/admin/index.php');
+                header('Location: ' . BASE_URL . '/admin/index.php');
             } else {
-                header('Location: /digitalProducts/index.php');
+                header('Location: ' . BASE_URL . '/index.php');
             }
             exit;
         } else {
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
 
         <div style="margin-top: 2rem; text-align: center; font-size: 0.875rem; color: var(--gray);">
-            Don't have an account? <a href="/digitalProducts/register.php" style="color: var(--primary); font-weight: 600;">Create Account</a>
+            Don't have an account? <a href="<?php echo BASE_URL; ?>/register.php" style="color: var(--primary); font-weight: 600;">Create Account</a>
         </div>
     </div>
 </section>

@@ -3,7 +3,7 @@
 include '../includes/header.php';
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: /digitalProducts/login.php');
+    header('Location: ' . BASE_URL . '/login.php');
     exit;
 }
 
@@ -80,7 +80,7 @@ if (isset($_POST['update_product'])) {
                             <input type="text" name="name" value="<?php echo htmlspecialchars($product['name']); ?>" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px;" required>
                         </div>
                         <div>
-                            <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Price (<?php echo CURRENCY_SYMBOL; ?>)</label>
+                            <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Price (<?php echo APP_CURRENCY_SYMBOL; ?>)</label>
                             <input type="number" step="0.01" name="price" value="<?php echo $product['price']; ?>" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px;" required>
                         </div>
                     </div>
@@ -111,7 +111,7 @@ if (isset($_POST['update_product'])) {
 
                     <div style="margin-bottom: 3rem;">
                         <label style="display: block; font-weight: 600; margin-bottom: 1rem;">Current Preview Image</label>
-                        <img src="/digitalProducts/uploads/previews/<?php echo $product['preview_image']; ?>" style="max-width: 300px; border-radius: var(--radius); border: 1px solid var(--border);">
+                        <img src="<?php echo BASE_URL; ?>/uploads/previews/<?php echo $product['preview_image']; ?>" style="max-width: 300px; border-radius: var(--radius); border: 1px solid var(--border);">
                     </div>
 
                     <button type="submit" name="update_product" class="btn btn-primary" style="padding: 1rem 3rem;">Update Product</button>

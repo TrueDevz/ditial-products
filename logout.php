@@ -3,6 +3,6 @@
 session_start();
 session_unset();
 session_destroy();
-header('Location: /digitalProducts/index.php');
+header('Location: ' . BASE_URL . '/index.php');
 exit;
 ?>

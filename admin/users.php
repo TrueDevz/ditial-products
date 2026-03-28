@@ -3,7 +3,7 @@
 include '../includes/header.php';
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: /digitalProducts/login.php');
+    header('Location: ' . BASE_URL . '/login.php');
     exit;
 }
 
@@ -15,7 +15,7 @@ if (isset($_GET['change_role']) && isset($_GET['id'])) {
         $stmt = $pdo->prepare("UPDATE users SET role = ? WHERE id = ?");
         $stmt->execute([$role, $id]);
     }
-    header('Location: /digitalProducts/admin/users.php');
+    header('Location: ' . BASE_URL . '/admin/users.php');
     exit;
 }
 
@@ -24,7 +24,7 @@ if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     $stmt = $pdo->prepare("DELETE FROM users WHERE id = ? AND id != ?");
     $stmt->execute([$id, $_SESSION['user_id']]); // Don't delete self
-    header('Location: /digitalProducts/admin/users.php');
+    header('Location: ' . BASE_URL . '/admin/users.php');
     exit;
 }
 

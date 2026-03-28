@@ -3,7 +3,7 @@
 include '../includes/header.php';
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: /digitalProducts/login.php');
+    header('Location: ' . BASE_URL . '/login.php');
     exit;
 }
 
@@ -19,7 +19,7 @@ if (isset($_GET['action']) && isset($_GET['id'])) {
         $stmt = $pdo->prepare("UPDATE products SET status = ? WHERE id = ?");
         $stmt->execute([$status, $id]);
     }
-    header('Location: /digitalProducts/admin/products.php');
+    header('Location: ' . BASE_URL . '/admin/products.php');
     exit;
 }
 
@@ -38,7 +38,7 @@ $products = $stmt->fetchAll();
         <main style="flex: 1;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                 <h1 style="font-weight: 800; margin: 0;">Product Management</h1>
-                <a href="/digitalProducts/dashboard/upload.php" class="btn btn-primary">+ Add New Product</a>
+                <a href="<?php echo BASE_URL; ?>/dashboard/upload.php" class="btn btn-primary">+ Add New Product</a>
             </div>
 
             <div style="background: white; padding: 2.5rem; border-radius: var(--radius); box-shadow: var(--shadow);">
@@ -58,13 +58,13 @@ $products = $stmt->fetchAll();
                     <tr style="border-bottom: 1px solid var(--border);">
                         <td style="padding: 1rem;">
                             <div style="display: flex; gap: 1rem; align-items: center;">
-                                <img src="/digitalProducts/uploads/previews/<?php echo $p['preview_image']; ?>" style="width: 50px; height: 40px; border-radius: 4px; object-fit: cover;">
+                                <img src="<?php echo BASE_URL; ?>/uploads/previews/<?php echo $p['preview_image']; ?>" style="width: 50px; height: 40px; border-radius: 4px; object-fit: cover;">
                                 <span style="font-weight: 600;"><?php echo $p['name']; ?></span>
                             </div>
                         </td>
                         <td style="padding: 1rem;"><?php echo $p['seller_name']; ?></td>
                         <td style="padding: 1rem;"><?php echo $p['category_name']; ?></td>
-                        <td style="padding: 1rem; font-weight: 700;"><?php echo CURRENCY_SYMBOL; ?><?php echo $p['price']; ?></td>
+                        <td style="padding: 1rem; font-weight: 700;"><?php echo APP_CURRENCY_SYMBOL; ?> <?php echo number_format($p['price'], 2); ?></td>
                         <td style="padding: 1rem;">
                             <?php 
                                 $status_color = ($p['status'] === 'approved') ? '#16a34a' : (($p['status'] === 'pending') ? '#ca8a04' : '#dc2626');
@@ -81,7 +81,7 @@ $products = $stmt->fetchAll();
                             <?php endif; ?>
                             <a href="edit_product.php?id=<?php echo $p['id']; ?>" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; color: var(--primary);"><i class="bi bi-pencil"></i></a>
                             <a href="?action=delete&id=<?php echo $p['id']; ?>" onclick="return confirm('Are you sure you want to delete this product?')" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; color: #ef4444;"><i class="bi bi-trash"></i></a>
-                            <a href="/digitalProducts/product.php?slug=<?php echo $p['slug']; ?>" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;"><i class="bi bi-eye"></i></a>
+                            <a href="<?php echo BASE_URL; ?>/product.php?slug=<?php echo $p['slug']; ?>" class="btn btn-outline" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;"><i class="bi bi-eye"></i></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

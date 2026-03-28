@@ -26,7 +26,7 @@ $final_total = $total - $discount;
                     <i class="bi bi-cart-x" style="font-size: 4rem; color: var(--gray); opacity: 0.3;"></i>
                     <h2 style="margin-top: 1.5rem;">Your cart is empty</h2>
                     <p style="color: var(--gray); margin-bottom: 2rem;">Looks like you haven't added anything to your cart yet.</p>
-                    <a href="/digitalProducts/category.php" class="btn btn-primary">Browse Marketplace</a>
+                    <a href="<?php echo BASE_URL; ?>/category.php" class="btn btn-primary">Browse Marketplace</a>
                 </div>
             <?php else: ?>
                 <div style="background: white; border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden;">
@@ -44,18 +44,18 @@ $final_total = $total - $discount;
                             <?php foreach ($cart as $item): ?>
                                 <tr style="border-bottom: 1px solid var(--border);">
                                     <td style="padding: 1.5rem; display: flex; gap: 1rem; align-items: center;">
-                                        <div style="width: 80px; height: 60px; background-image: url('/digitalProducts/uploads/previews/<?php echo $item['image']; ?>'); background-size: cover; background-position: center; border-radius: 4px;"></div>
+                                        <div style="width: 80px; height: 60px; background-image: url('<?php echo BASE_URL; ?>/uploads/previews/<?php echo $item['image']; ?>'); background-size: cover; background-position: center; border-radius: 4px;"></div>
                                         <span style="font-weight: 600;"><?php echo $item['name']; ?></span>
                                     </td>
-                                    <td style="padding: 1.5rem;"><?php echo CURRENCY_SYMBOL; ?><?php echo number_format($item['price'], 2); ?></td>
+                                    <td style="padding: 1.5rem;"><?php echo APP_CURRENCY_SYMBOL; ?> <?php echo number_format($item['price'], 2); ?></td>
                                     <td style="padding: 1.5rem;">
                                         <div style="display: flex; align-items: center; gap: 0.5rem;">
                                             <input type="number" value="<?php echo $item['quantity']; ?>" style="width: 60px; padding: 0.5rem; border: 1px solid var(--border); border-radius: 4px;" readonly>
                                         </div>
                                     </td>
-                                    <td style="padding: 1.5rem; font-weight: 700;"><?php echo CURRENCY_SYMBOL; ?><?php echo number_format($item['price'] * $item['quantity'], 2); ?></td>
+                                    <td style="padding: 1.5rem; font-weight: 700;"><?php echo APP_CURRENCY_SYMBOL; ?> <?php echo number_format($item['price'] * $item['quantity'], 2); ?></td>
                                     <td style="padding: 1.5rem; text-align: right;">
-                                        <form action="/digitalProducts/handlers/cart_handler.php" method="POST">
+                                        <form action="<?php echo BASE_URL; ?>/handlers/cart_handler.php" method="POST">
                                             <input type="hidden" name="product_id" value="<?php echo $item['id']; ?>">
                                             <input type="hidden" name="action" value="remove">
                                             <button type="submit" style="background: none; border: none; color: #ef4444; font-size: 1.25rem; cursor: pointer;"><i class="bi bi-trash"></i></button>
@@ -77,21 +77,21 @@ $final_total = $total - $discount;
                     
                     <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; font-size: 1.1rem;">
                         <span style="color: var(--gray);">Subtotal</span>
-                        <span style="font-weight: 600;"><?php echo CURRENCY_SYMBOL; ?><?php echo number_format($total, 2); ?></span>
+                        <span style="font-weight: 600;"><?php echo APP_CURRENCY_SYMBOL; ?> <?php echo number_format($total, 2); ?></span>
                     </div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 1.5rem; font-size: 1.1rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;">
                         <span style="color: var(--gray);">Handling Fee</span>
-                        <span style="font-weight: 600;"><?php echo CURRENCY_SYMBOL; ?>0.00</span>
+                        <span style="font-weight: 600;"><?php echo APP_CURRENCY_SYMBOL; ?> 0.00</span>
                     </div>
                     
                     <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; font-size: 1.1rem; color: #16a34a; <?php echo $discount > 0 ? '' : 'display: none;'; ?>">
                         <span>Discount (<?php echo $_SESSION['applied_coupon']['code'] ?? ''; ?>)</span>
-                        <span>-<?php echo CURRENCY_SYMBOL; ?><?php echo number_format($discount, 2); ?></span>
+                        <span>-<?php echo APP_CURRENCY_SYMBOL; ?> <?php echo number_format($discount, 2); ?></span>
                     </div>
 
                     <div style="display: flex; justify-content: space-between; margin-bottom: 2.5rem;">
                         <span style="font-size: 1.25rem; font-weight: 800;">Total</span>
-                        <span style="font-size: 1.5rem; font-weight: 800; color: var(--primary);"><?php echo CURRENCY_SYMBOL; ?><?php echo number_format($final_total, 2); ?></span>
+                        <span style="font-size: 1.5rem; font-weight: 800; color: var(--primary);"><?php echo APP_CURRENCY_SYMBOL; ?> <?php echo number_format($final_total, 2); ?></span>
                     </div>
 
                     <form id="coupon-form" style="margin-bottom: 2rem; border-top: 1px solid var(--border); padding-top: 1.5rem;">
@@ -104,11 +104,11 @@ $final_total = $total - $discount;
                     </form>
 
                     <?php if (isset($_SESSION['user_id'])): ?>
-                        <a href="/digitalProducts/checkout.php" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 1.25rem; font-size: 1.125rem;">
+                        <a href="<?php echo BASE_URL; ?>/checkout.php" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 1.25rem; font-size: 1.125rem;">
                             Proceed to Checkout
                         </a>
                     <?php else: ?>
-                        <a href="/digitalProducts/login.php" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 1.25rem; font-size: 1.125rem;">
+                        <a href="<?php echo BASE_URL; ?>/login.php" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 1.25rem; font-size: 1.125rem;">
                             Login to Checkout
                         </a>
                     <?php endif; ?>

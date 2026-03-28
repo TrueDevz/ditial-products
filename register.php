@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             $stmt = $pdo->prepare("INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)");
             if ($stmt->execute([$username, $email, $hashed_password, $role])) {
-                $success = 'Registration successful! You can now <a href="/digitalProducts/login.php">login</a>.';
+                $success = 'Registration successful! You can now <a href="' . BASE_URL . '/login.php">login</a>.';
             } else {
                 $error = 'Something went wrong. Please try again.';
             }
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
 
         <div style="margin-top: 2rem; text-align: center; font-size: 0.875rem; color: var(--gray);">
-            Already have an account? <a href="/digitalProducts/login.php" style="color: var(--primary); font-weight: 600;">Sign In</a>
+            Already have an account? <a href="<?php echo BASE_URL; ?>/login.php" style="color: var(--primary); font-weight: 600;">Sign In</a>
         </div>
     </div>
 </section>

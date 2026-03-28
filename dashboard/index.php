@@ -3,7 +3,7 @@
 include '../includes/header.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header('Location: /digitalProducts/login.php');
+    header('Location: ' . BASE_URL . '/login.php');
     exit;
 }
 
@@ -40,19 +40,19 @@ if ($role === 'seller') {
         <!-- Sidebar -->
         <aside style="width: 250px; min-width: 250px;">
             <div style="background: white; padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow); text-align: center; margin-bottom: 2rem;">
-                <img src="/digitalProducts/assets/images/<?php echo $user['avatar']; ?>" style="width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary); margin-bottom: 1rem; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=<?php echo $user['username']; ?>&background=random';">
+                <img src="<?php echo BASE_URL; ?>/assets/images/<?php echo $user['avatar']; ?>" style="width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary); margin-bottom: 1rem; object-fit: cover;" onerror="this.src='https://ui-avatars.com/api/?name=<?php echo $user['username']; ?>&background=random';">
                 <h3 style="font-weight: 700;"><?php echo $user['username']; ?></h3>
                 <p style="color: var(--gray); font-size: 0.875rem; text-transform: capitalize;"><?php echo $user['role']; ?></p>
             </div>
             
             <div style="background: white; padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow);">
                 <ul style="list-style: none;">
-                    <li style="margin-bottom: 1rem;"><a href="<?php echo ($_SESSION['role'] === 'admin') ? '/digitalProducts/admin/index.php' : '/digitalProducts/dashboard/index.php'; ?>" style="color: var(--primary); font-weight: 600;"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                    <li style="margin-bottom: 1rem;"><a href="<?php echo ($_SESSION['role'] === 'admin') ? BASE_URL . '/admin/index.php' : BASE_URL . '/dashboard/index.php'; ?>" style="color: var(--primary); font-weight: 600;"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
                     <?php if ($role === 'seller'): ?>
-                        <li style="margin-bottom: 1rem;"><a href="/digitalProducts/dashboard/upload.php" style="color: var(--gray);"><i class="bi bi-cloud-upload"></i> Upload Item</a></li>
+                        <li style="margin-bottom: 1rem;"><a href="<?php echo BASE_URL; ?>/dashboard/upload.php" style="color: var(--gray);"><i class="bi bi-cloud-upload"></i> Upload Item</a></li>
                     <?php endif; ?>
                     <li style="margin-bottom: 1rem;"><a href="#" style="color: var(--gray);"><i class="bi bi-person"></i> My Profile</a></li>
-                    <li style="margin-bottom: 1rem;"><a href="/digitalProducts/logout.php" style="color: #ef4444;"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                    <li style="margin-bottom: 1rem;"><a href="<?php echo BASE_URL; ?>/logout.php" style="color: #ef4444;"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
                 </ul>
             </div>
         </aside>
@@ -106,7 +106,7 @@ if ($role === 'seller') {
                                     </td>
                                     <td style="padding: 1rem 0; color: var(--gray); font-size: 0.875rem;"><?php echo date('M d, Y', strtotime($p['purchase_date'])); ?></td>
                                     <td style="padding: 1rem 0; text-align: right;">
-                                        <a href="/digitalProducts/uploads/files/<?php echo $p['main_file']; ?>" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.875rem;" download>
+                                        <a href="<?php echo BASE_URL; ?>/uploads/files/<?php echo $p['main_file']; ?>" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.875rem;" download>
                                             <i class="bi bi-download"></i> Download
                                         </a>
                                     </td>
@@ -122,7 +122,7 @@ if ($role === 'seller') {
                 <div style="background: white; padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                         <h3 style="margin: 0;">My Listed Products</h3>
-                        <a href="/digitalProducts/dashboard/upload.php" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">+ Upload New</a>
+                        <a href="<?php echo BASE_URL; ?>/dashboard/upload.php" class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">+ Upload New</a>
                     </div>
                     <?php if (empty($my_products)): ?>
                         <p style="color: var(--gray);">You haven't uploaded any items yet.</p>
@@ -145,7 +145,7 @@ if ($role === 'seller') {
                                         </td>
                                         <td style="padding: 1rem 0;"><?php echo $p['sales']; ?></td>
                                         <td style="padding: 1rem 0; text-align: right;">
-                                            <a href="/digitalProducts/product.php?slug=<?php echo $p['slug']; ?>" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.875rem;">
+                                            <a href="<?php echo BASE_URL; ?>/product.php?slug=<?php echo $p['slug']; ?>" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.875rem;">
                                                 <i class="bi bi-eye"></i> View
                                             </a>
                                         </td>

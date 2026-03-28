@@ -51,13 +51,13 @@ if ($category_slug) {
                 <h3 style="margin-bottom: 1.5rem; font-size: 1.25rem; font-weight: 700;">Categories</h3>
                 <ul style="list-style: none;">
                     <li style="margin-bottom: 0.75rem;">
-                        <a href="/digitalProducts/category.php" style="<?php echo !$category_slug ? 'color: var(--primary); font-weight: 600;' : 'color: var(--gray);'; ?>">
+                        <a href="<?php echo BASE_URL; ?>/category.php" style="<?php echo !$category_slug ? 'color: var(--primary); font-weight: 600;' : 'color: var(--gray);'; ?>">
                             All Categories
                         </a>
                     </li>
                     <?php foreach ($categories as $cat): ?>
                         <li style="margin-bottom: 0.75rem;">
-                            <a href="/digitalProducts/category.php?slug=<?php echo $cat['slug']; ?>" style="<?php echo $category_slug === $cat['slug'] ? 'color: var(--primary); font-weight: 600;' : 'color: var(--gray);'; ?>">
+                            <a href="<?php echo BASE_URL; ?>/category.php?slug=<?php echo $cat['slug']; ?>" style="<?php echo $category_slug === $cat['slug'] ? 'color: var(--primary); font-weight: 600;' : 'color: var(--gray);'; ?>">
                                 <?php echo $cat['name']; ?>
                             </a>
                         </li>
@@ -103,7 +103,7 @@ if ($category_slug) {
                 <?php else: ?>
                     <?php foreach ($products as $product): ?>
                         <div class="product-card">
-                            <div class="product-image" style="background-image: url('/digitalProducts/uploads/previews/<?php echo $product['preview_image']; ?>'); position: relative;">
+                            <div class="product-image" style="background-image: url('<?php echo BASE_URL; ?>/uploads/previews/<?php echo $product['preview_image']; ?>'); position: relative;">
                                 <?php
                                 $is_wishlisted = false;
                                 if (isset($_SESSION['user_id'])) {
@@ -120,8 +120,8 @@ if ($category_slug) {
                                 <div class="product-category"><?php echo $product['category_name']; ?></div>
                                 <h3 class="product-title"><?php echo $product['name']; ?></h3>
                                 <div class="product-meta">
-                                    <div class="product-price"><?php echo CURRENCY_SYMBOL; ?><?php echo $product['price']; ?></div>
-                                    <a href="/digitalProducts/product.php?slug=<?php echo $product['slug']; ?>" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.875rem;">Details</a>
+                                    <div class="product-price"><?php echo APP_CURRENCY_SYMBOL; ?> <?php echo number_format($product['price'], 2); ?></div>
+                                    <a href="<?php echo BASE_URL; ?>/product.php?slug=<?php echo $product['slug']; ?>" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.875rem;">Details</a>
                                 </div>
                             </div>
                         </div>

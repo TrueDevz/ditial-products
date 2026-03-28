@@ -10,19 +10,19 @@
                     <p style="opacity: 0.7; font-size: 0.875rem;">Premium digital products marketplace for high-quality assets, templates, and scripts.</p>
                 </div>
                 <div>
-                    <h4 class="footer-title">Marketplace</h4>
+                    <h4 class="footer-title">Company</h4>
                     <ul class="footer-links">
-                        <li><a href="/digitalProducts/category.php?slug=php-scripts" class="footer-link">PHP Scripts</a></li>
-                        <li><a href="/digitalProducts/category.php?slug=html-templates" class="footer-link">HTML Templates</a></li>
-                        <li><a href="/digitalProducts/category.php?slug=graphics" class="footer-link">Graphics</a></li>
+                        <li><a href="<?php echo BASE_URL; ?>/about.php" class="footer-link">About Us</a></li>
+                        <li><a href="<?php echo BASE_URL; ?>/contact.php" class="footer-link">Contact Us</a></li>
+                        <li><a href="<?php echo BASE_URL; ?>/category.php" class="footer-link">Marketplace</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="footer-title">Help & Support</h4>
+                    <h4 class="footer-title">Support & Legal</h4>
                     <ul class="footer-links">
-                        <li><a href="#" class="footer-link">Documentation</a></li>
-                        <li><a href="#" class="footer-link">FAQs</a></li>
-                        <li><a href="#" class="footer-link">Contact Us</a></li>
+                        <li><a href="<?php echo BASE_URL; ?>/privacy.php" class="footer-link">Privacy Policy</a></li>
+                        <li><a href="<?php echo BASE_URL; ?>/terms.php" class="footer-link">Terms & Conditions</a></li>
+                        <li><a href="<?php echo BASE_URL; ?>/disclaimer.php" class="footer-link">Disclaimer</a></li>
                     </ul>
                 </div>
                 <div>
@@ -38,6 +38,6 @@
             </div>
         </div>
     </footer>
-    <script src="/digitalProducts/assets/js/main.js"></script>
+    <script src="<?php echo BASE_URL; ?>/assets/js/main.js"></script>
 </body>
 </html>

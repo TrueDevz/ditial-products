@@ -4,7 +4,7 @@ include 'includes/header.php';
 
 $slug = $_GET['slug'] ?? '';
 if (!$slug) {
-    header('Location: /digitalProducts/index.php');
+    header('Location: ' . BASE_URL . '/index.php');
     exit;
 }
 
@@ -16,7 +16,7 @@ $stmt->execute([$slug]);
 $product = $stmt->fetch();
 
 if (!$product) {
-    echo "<div class='container' style='padding: 5rem 0; text-align: center;'><h2>Product not found or pending approval.</h2><a href='/digitalProducts/index.php' class='btn btn-primary'>Back Home</a></div>";
+    echo "<div class='container' style='padding: 5rem 0; text-align: center;'><h2>Product not found or pending approval.</h2><a href='" . BASE_URL . "/index.php' class='btn btn-primary'>Back Home</a></div>";
     include 'includes/footer.php';
     exit;
 }
@@ -35,7 +35,7 @@ $reviews = $stmt->fetchAll();
         <!-- Left: Image and Description -->
         <div style="flex: 2; min-width: 400px;">
             <div style="background: white; padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow); margin-bottom: 2rem;">
-                <img src="/digitalProducts/uploads/previews/<?php echo $product['preview_image']; ?>" style="width: 100%; border-radius: var(--radius); margin-bottom: 2rem; box-shadow: var(--shadow);">
+                <img src="<?php echo BASE_URL; ?>/uploads/previews/<?php echo $product['preview_image']; ?>" style="width: 100%; border-radius: var(--radius); margin-bottom: 2rem; box-shadow: var(--shadow);">
                 <h2 style="font-weight: 800; margin-bottom: 1.5rem;">Description</h2>
                 <div style="line-height: 1.8; color: #444;">
                     <?php echo nl2br($product['description']); ?>
@@ -47,7 +47,7 @@ $reviews = $stmt->fetchAll();
                 <h3 style="margin-bottom: 2rem;">Reviews (<?php echo count($reviews); ?>)</h3>
                 
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <form action="/digitalProducts/handlers/review_handler.php" method="POST" style="margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border);">
+                    <form action="<?php echo BASE_URL; ?>/handlers/review_handler.php" method="POST" style="margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border);">
                         <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
                         <div style="margin-bottom: 1.5rem;">
                             <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Your Rating</label>
@@ -97,11 +97,11 @@ $reviews = $stmt->fetchAll();
                 <p style="color: var(--gray); margin-bottom: 2rem;">Published by <span style="color: var(--primary); font-weight: 600;"><?php echo $product['seller_name']; ?></span></p>
 
                 <div style="font-size: 2.5rem; font-weight: 800; color: var(--dark); margin-bottom: 2rem;">
-                    <?php echo CURRENCY_SYMBOL; ?><?php echo $product['price']; ?>
+                    <?php echo APP_CURRENCY_SYMBOL; ?> <?php echo number_format($product['price'], 2); ?>
                 </div>
 
                 <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
-                    <form action="/digitalProducts/handlers/cart_handler.php" method="POST" style="flex: 1;">
+                    <form action="<?php echo BASE_URL; ?>/handlers/cart_handler.php" method="POST" style="flex: 1;">
                         <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
                         <input type="hidden" name="action" value="add">
                         <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 1.25rem; font-size: 1.125rem;">

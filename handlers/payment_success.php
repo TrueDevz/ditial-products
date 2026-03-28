@@ -26,12 +26,15 @@ if ($order_id && $payment_id) {
         }
 
         foreach ($_SESSION['cart'] as $item) {
-            $purchase_code = strtoupper(generatePurchaseCode());
-            $stmt = $pdo->prepare("INSERT INTO order_items (order_id, product_id, price, purchase_code) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$order_id, $item['id'], $item['price'], $purchase_code]);
+            $quantity = $item['quantity'] ?? 1;
+            for ($i = 0; $i < $quantity; $i++) {
+                $purchase_code = strtoupper(generatePurchaseCode());
+                $stmt = $pdo->prepare("INSERT INTO order_items (order_id, product_id, price, purchase_code) VALUES (?, ?, ?, ?)");
+                $stmt->execute([$order_id, $item['id'], $item['price'], $purchase_code]);
+            }
 
-            // Update product sales count
-            $pdo->prepare("UPDATE products SET sales = sales + 1 WHERE id = ?")->execute([$item['id']]);
+            // Update product sales count by quantity
+            $pdo->prepare("UPDATE products SET sales = sales + ? WHERE id = ?")->execute([$quantity, $item['id']]);
         }
     }
 
@@ -39,10 +42,10 @@ if ($order_id && $payment_id) {
     $_SESSION['cart'] = [];
     
     $_SESSION['payment_success'] = "Thank you! Your purchase was successful. You can find your downloads in the dashboard.";
-    header('Location: /digitalProducts/dashboard/index.php');
+    header('Location: ' . BASE_URL . '/dashboard/index.php');
     exit;
 } else {
-    header('Location: /digitalProducts/index.php');
+    header('Location: ' . BASE_URL . '/index.php');
     exit;
 }
 ?>

@@ -28,6 +28,9 @@ try {
 }
 
 define('SITE_NAME', $global_settings['site_name'] ?? 'DigitalMarket');
-define('CURRENCY_SYMBOL', $global_settings['currency_symbol'] ?? '$');
+define('APP_CURRENCY_SYMBOL', $global_settings['currency_symbol'] ?? '$');
 define('CURRENCY_CODE', $global_settings['currency_code'] ?? 'USD');
+
+// Base URL for the project
+define('BASE_URL', 'https://pixvibestudios.in');
 ?>

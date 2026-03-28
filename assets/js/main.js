@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const productId = this.getAttribute('data-product-id');
             const icon = this.querySelector('i');
             
-            fetch('/digitalProducts/handlers/wishlist_handler.php', {
+            fetch(window.BASE_URL + '/handlers/wishlist_handler.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `product_id=${productId}`
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         icon.style.color = 'inherit';
                     }
                 } else if (data.status === 'unauthorized') {
-                    window.location.href = '/digitalProducts/login.php';
+                    window.location.href = window.BASE_URL + '/login.php';
                 }
             });
         });
@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const code = document.getElementById('coupon-code').value;
             const msgArea = document.getElementById('coupon-message');
             
-            fetch('/digitalProducts/handlers/apply_coupon.php', {
+            fetch(window.BASE_URL + '/handlers/apply_coupon.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `code=${code}`

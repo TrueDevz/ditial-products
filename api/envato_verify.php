@@ -14,7 +14,7 @@ if (empty($code)) {
 }
 
 // Fetch our custom Envato token from settings
-$stmt = $pdo->query("SELECT value FROM settings WHERE name = 'envato_token'");
+$stmt = $pdo->query("SELECT val FROM settings WHERE name = 'envato_token'");
 $our_token = $stmt->fetchColumn() ?: 'OUR_SECRET_TOKEN';
 
 // Verify Authorization header

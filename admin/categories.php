@@ -4,7 +4,7 @@ include '../includes/header.php';
 require_once '../includes/functions.php';
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header('Location: /digitalProducts/login.php');
+    header('Location: ' . BASE_URL . '/login.php');
     exit;
 }
 
@@ -45,7 +45,7 @@ if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     $stmt = $pdo->prepare("DELETE FROM categories WHERE id = ?");
     $stmt->execute([$id]);
-    header('Location: /digitalProducts/admin/categories.php');
+    header('Location: ' . BASE_URL . '/admin/categories.php');
     exit;
 }
 

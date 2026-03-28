@@ -4,7 +4,7 @@ include 'includes/header.php';
 require_once 'config/razorpay.php';
 
 if (!isset($_SESSION['user_id']) || empty($_SESSION['cart'])) {
-    header('Location: /digitalProducts/cart.php');
+    header('Location: ' . BASE_URL . '/cart.php');
     exit;
 }
 
@@ -35,23 +35,23 @@ $db_order_id = $pdo->lastInsertId();
     <div style="background: white; padding: 4rem; border-radius: var(--radius); box-shadow: var(--shadow-lg); text-align: center;">
         <i class="bi bi-shield-lock" style="font-size: 3rem; color: var(--primary); margin-bottom: 1.5rem;"></i>
         <h2 style="font-weight: 800; margin-bottom: 1rem;">Complete Your Purchase</h2>
-        <p style="color: var(--gray); margin-bottom: 3rem;">You are about to purchase <?php echo count($cart); ?> items for a total of <strong><?php echo CURRENCY_SYMBOL; ?><?php echo number_format($final_total, 2); ?></strong>.</p>
+        <p style="color: var(--gray); margin-bottom: 3rem;">You are about to purchase <?php echo count($cart); ?> items for a total of <strong><?php echo APP_CURRENCY_SYMBOL; ?> <?php echo number_format($final_total, 2); ?></strong>.</p>
 
         <div style="background: var(--light); padding: 2rem; border-radius: var(--radius); margin-bottom: 3rem; text-align: left;">
             <h4 style="margin-bottom: 1.5rem;">Order Summary</h4>
             <?php foreach ($cart as $item): ?>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem; font-size: 0.9375rem;">
                     <span><?php echo $item['name']; ?> x <?php echo $item['quantity']; ?></span>
-                    <span style="font-weight: 600;"><?php echo CURRENCY_SYMBOL; ?><?php echo number_format($item['price'] * $item['quantity'], 2); ?></span>
+                    <span style="font-weight: 600;"><?php echo APP_CURRENCY_SYMBOL; ?> <?php echo number_format($item['price'] * $item['quantity'], 2); ?></span>
                 </div>
             <?php endforeach; ?>
             <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem; font-size: 0.9375rem; color: #16a34a; <?php echo $discount > 0 ? '' : 'display: none;'; ?>">
                 <span>Coupon Discount (<?php echo $_SESSION['applied_coupon']['code'] ?? ''; ?>)</span>
-                <span style="font-weight: 600;">-<?php echo CURRENCY_SYMBOL; ?><?php echo number_format($discount, 2); ?></span>
+                <span style="font-weight: 600;">-<?php echo APP_CURRENCY_SYMBOL; ?> <?php echo number_format($discount, 2); ?></span>
             </div>
             <div style="border-top: 1px solid var(--border); margin-top: 1rem; padding-top: 1rem; display: flex; justify-content: space-between; font-weight: 800; font-size: 1.125rem;">
                 <span>Total Amount</span>
-                <span style="color: var(--primary);"><?php echo CURRENCY_SYMBOL; ?><?php echo number_format($final_total, 2); ?></span>
+                <span style="color: var(--primary);"><?php echo APP_CURRENCY_SYMBOL; ?> <?php echo number_format($final_total, 2); ?></span>
             </div>
         </div>
 
@@ -72,7 +72,7 @@ $db_order_id = $pdo->lastInsertId();
             "order_id": "", // In real life, use Razorpay Server SDK to get this
             "handler": function (response){
                 // On success, redirect to success handler
-                window.location.href = "/digitalProducts/handlers/payment_success.php?order_id=<?php echo $db_order_id; ?>&payment_id=" + response.razorpay_payment_id;
+                window.location.href = "<?php echo BASE_URL; ?>/handlers/payment_success.php?order_id=<?php echo $db_order_id; ?>&payment_id=" + response.razorpay_payment_id;
             },
             "prefill": {
                 "name": "<?php echo $_SESSION['username']; ?>",
