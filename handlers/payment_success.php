@@ -15,9 +15,20 @@ if ($order_id && $payment_id) {
 
     // Add order items
     if (isset($_SESSION['cart'])) {
+        function generatePurchaseCode() {
+            return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+                mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+                mt_rand(0, 0xffff),
+                mt_rand(0, 0x0fff) | 0x4000,
+                mt_rand(0, 0x3fff) | 0x8000,
+                mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+            );
+        }
+
         foreach ($_SESSION['cart'] as $item) {
-            $stmt = $pdo->prepare("INSERT INTO order_items (order_id, product_id, price) VALUES (?, ?, ?)");
-            $stmt->execute([$order_id, $item['id'], $item['price']]);
+            $purchase_code = strtoupper(generatePurchaseCode());
+            $stmt = $pdo->prepare("INSERT INTO order_items (order_id, product_id, price, purchase_code) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$order_id, $item['id'], $item['price'], $purchase_code]);
 
             // Update product sales count
             $pdo->prepare("UPDATE products SET sales = sales + 1 WHERE id = ?")->execute([$item['id']]);

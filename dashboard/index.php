@@ -18,7 +18,7 @@ $user = $stmt->fetch();
 // If buyer: Fetch purchases
 $purchases = [];
 if ($role === 'user' || $role === 'seller') {
-    $stmt = $pdo->prepare("SELECT p.*, o.created_at as purchase_date FROM order_items oi 
+    $stmt = $pdo->prepare("SELECT p.*, o.created_at as purchase_date, oi.purchase_code FROM order_items oi 
                            JOIN orders o ON oi.order_id = o.id 
                            JOIN products p ON oi.product_id = p.id 
                            WHERE o.user_id = ? AND o.payment_status = 'completed'");
@@ -92,6 +92,7 @@ if ($role === 'seller') {
                         <thead>
                             <tr style="text-align: left; border-bottom: 2px solid var(--light);">
                                 <th style="padding: 1rem 0;">Product</th>
+                                <th style="padding: 1rem 0;">Purchase Code</th>
                                 <th style="padding: 1rem 0;">Date</th>
                                 <th style="padding: 1rem 0; text-align: right;">Action</th>
                             </tr>
@@ -100,6 +101,9 @@ if ($role === 'seller') {
                             <?php foreach ($purchases as $p): ?>
                                 <tr style="border-bottom: 1px solid var(--light);">
                                     <td style="padding: 1rem 0; font-weight: 600;"><?php echo $p['name']; ?></td>
+                                    <td style="padding: 1rem 0;">
+                                        <code style="background: var(--light); padding: 4px 8px; border-radius: 4px; font-size: 0.8125rem; font-family: monospace;"><?php echo $p['purchase_code']; ?></code>
+                                    </td>
                                     <td style="padding: 1rem 0; color: var(--gray); font-size: 0.875rem;"><?php echo date('M d, Y', strtotime($p['purchase_date'])); ?></td>
                                     <td style="padding: 1rem 0; text-align: right;">
                                         <a href="/digitalProducts/uploads/files/<?php echo $p['main_file']; ?>" class="btn btn-outline" style="padding: 0.4rem 1rem; font-size: 0.875rem;" download>

@@ -85,6 +85,24 @@ try {
                         </div>
                     </div>
 
+                    <h3 style="margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem;">License Server Integration (Self-Hosted)</h3>
+                    <div style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 3rem;">
+                        <div style="margin-bottom: 2rem;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Purchase Verification API URL</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="text" value="<?php echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/digitalProducts/v3/market/buyer/purchase"; ?>" style="flex: 1; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; background: #f1f5f9; font-family: monospace;" readonly>
+                                <button type="button" class="btn btn-outline" onclick="navigator.clipboard.writeText(this.previousElementSibling.value); alert('URL Copied!')">Copy URL</button>
+                            </div>
+                            <small style="color: #64748b;">Use this URL in your apps or in your <strong>License Server</strong> to verify purchase codes.</small>
+                        </div>
+
+                        <div style="max-width: 500px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;">Your Custom License Token (Bearer Token)</label>
+                            <input type="text" name="settings[envato_token]" value="<?php echo htmlspecialchars($settings['envato_token'] ?? 'OUR_SECRET_TOKEN'); ?>" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px;">
+                            <small style="color: var(--gray);">This must match the <code>ENVATO_TOKEN</code> in your license server's <code>config/settings.php</code>.</small>
+                        </div>
+                    </div>
+
                     <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 1.25rem; font-size: 1.125rem;">
                         <i class="bi bi-save"></i> Save All Settings
                     </button>

@@ -1,0 +1,5 @@
+RewriteEngine On
+
+# Route Envato API requests to our emulator
+RewriteCond %{REQUEST_URI} ^/v3/market/buyer/purchase
+RewriteRule ^(.*)$ api/envato_verify.php [L,QSA]

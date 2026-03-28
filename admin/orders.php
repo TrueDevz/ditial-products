@@ -55,6 +55,17 @@ $orders = $stmt->fetchAll();
                                     <td style="padding: 1.5rem 1rem; color: var(--gray); font-size: 0.8125rem;">
                                         <?php echo $order['razorpay_payment_id'] ?: 'N/A'; ?>
                                         <div style="font-size: 0.7rem;">ORID: <?php echo $order['razorpay_order_id']; ?></div>
+                                        <?php 
+                                            // Fetch codes for this order
+                                            $item_stmt = $pdo->prepare("SELECT purchase_code, p.name FROM order_items oi JOIN products p ON oi.product_id = p.id WHERE order_id = ?");
+                                            $item_stmt->execute([$order['id']]);
+                                            $items = $item_stmt->fetchAll();
+                                            foreach ($items as $item):
+                                        ?>
+                                            <div style="margin-top: 5px; color: var(--primary); font-family: monospace; font-size: 0.75rem;">
+                                                [<?php echo $item['name']; ?>]: <?php echo $item['purchase_code']; ?>
+                                            </div>
+                                        <?php endforeach; ?>
                                     </td>
                                     <td style="padding: 1.5rem 1rem; color: var(--gray); font-size: 0.875rem;">
                                         <?php echo date('M d, Y', strtotime($order['created_at'])); ?>
